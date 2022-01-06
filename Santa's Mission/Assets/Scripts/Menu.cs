@@ -23,7 +23,7 @@ public class Menu : MonoBehaviour
     [SerializeField] float veilOnSpeed = 0.5f;
     [SerializeField]
     Transform settingsPanel;
-    [SerializeField] float startSettingsPos = -400;
+    [SerializeField] float startSettingsPos = -2000;
     [SerializeField] float finalSettingsPos = 0;
     [SerializeField] float settingsSpeed = 0.5f;
     [SerializeField] float settingsDelay = 0.1f;

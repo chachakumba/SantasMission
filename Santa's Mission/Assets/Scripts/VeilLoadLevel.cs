@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Advertisements;
 
 public class VeilLoadLevel : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class VeilLoadLevel : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         anim = GetComponent<Animator>();
         anim.Play(veilHideDownName);
+        Advertisement.Initialize("4547037");
     }
     public void LoadGame()
     {
@@ -30,21 +32,16 @@ public class VeilLoadLevel : MonoBehaviour
     public void LoadGameVeil()
     {
         AsyncOperation load = SceneManager.LoadSceneAsync(2, LoadSceneMode.Single);
-        /*
-        SceneManager.UnloadSceneAsync(0);
-        AsyncOperation load = SceneManager.LoadSceneAsync(1);*/
         load.completed += (ctx)=> SceneLoad(true);
     }
     public void LoadMenuVeil()
     {
         AsyncOperation load = SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
-        /*
-        SceneManager.UnloadSceneAsync(1);
-        AsyncOperation load = SceneManager.LoadSceneAsync(0);*/
         load.completed += (ctx) => SceneLoad(false);
     }
     void SceneLoad(bool isToGame)
     {
+        ShowAd();
         if (isToGame)
         {
             anim.Play(veilHideUpName);
@@ -61,5 +58,14 @@ public class VeilLoadLevel : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+    void ShowAd()
+    {
+        if (Advertisement.IsReady("Interstitial_Android"))
+        {
+            Advertisement.Show("Interstitial_Android");
+            Debug.LogWarning("ShowingAd");
+        }
+        Debug.LogWarning("Not ShowingAd");
     }
 }

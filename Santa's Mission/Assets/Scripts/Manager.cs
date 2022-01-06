@@ -5,8 +5,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.Audio;
-
-
+using UnityEngine.Advertisements;
 public class Manager : MonoBehaviour
 {
     public static Manager instance;
@@ -22,11 +21,32 @@ public class Manager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         instance = this;
         LoadSave();
+        Advertisement.Initialize("4547037");
     }
     private void Start()
     {
         Menu.instance.UpdateTexts();
         StartMusic();
+        ShowBanner();
+    }
+    void ShowBanner()
+    {
+        if (Advertisement.IsReady("Banner_Android"))
+        {
+            Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
+            Advertisement.Banner.Show("Banner_Android");
+            Debug.LogWarning("ShowingBanner");
+        }
+        else
+        {
+            StartCoroutine(RepeatShowBanner());
+            Debug.LogWarning("Trying ShowingBanner");
+        }
+    }
+    IEnumerator RepeatShowBanner()
+    {
+        yield return new WaitForSeconds(1);
+        ShowBanner();
     }
     void StartMusic()
     {
@@ -38,6 +58,7 @@ public class Manager : MonoBehaviour
     IEnumerator MusicChecker(float time)
     {
         yield return new WaitForSeconds(time);
+        StartMusic();
     }
     public static void LoadSave()
     {
